@@ -2,3 +2,9 @@
 node_modules/
 *.tgz
 *.zip
+.env
+.env.*
+!.env.example
+coverage/
+dist/server/
+dist/.openai/

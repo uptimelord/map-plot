@@ -1,0 +1,11 @@
+import fs from 'node:fs/promises';
+import {build} from 'esbuild';
+const files=['index.html','style.css','accessible.css','app.js','geo.js','extraction.js'];
+const types={html:'text/html; charset=utf-8',css:'text/css; charset=utf-8',js:'text/javascript; charset=utf-8'};
+const assets={};for(const file of files)assets['/'+file]={body:await fs.readFile('dist/'+file,'utf8'),type:types[file.split('.').at(-1)]};
+await fs.mkdir('dist/server',{recursive:true});
+await build({stdin:{contents:`import {createSitesHandler} from './backend/sites-handler.js'; const fetch=createSitesHandler({assets:${JSON.stringify(assets)}}); export default {fetch};`,resolveDir:process.cwd(),sourcefile:'worker-entry.js'},outfile:'dist/server/index.js',bundle:true,format:'esm',platform:'browser',target:'es2022',minify:true});
+await fs.mkdir('dist/.openai',{recursive:true});
+await fs.copyFile('.openai/hosting.json','dist/.openai/hosting.json');
+await fs.cp('drizzle','dist/.openai/drizzle',{recursive:true});
+console.log('Built Sites Worker, page assets, and database migrations.');

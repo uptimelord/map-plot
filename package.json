@@ -1,1 +1,27 @@
-{"name":"lotlens","private":true,"type":"module","scripts":{"start":"node server.js","test":"node --test tests/geo.test.js"}}
+{
+  "name": "lotlens",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "test": "node --test tests/*.test.js",
+    "build": "node build/build.mjs",
+    "db:generate": "drizzle-kit generate"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.2",
+    "sharp": "^0.35.4"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.10",
+    "esbuild": "^0.28.2"
+  },
+  "overrides": {
+    "@esbuild-kit/core-utils": {
+      "esbuild": "^0.28.2"
+    }
+  }
+}
