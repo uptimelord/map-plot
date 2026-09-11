@@ -41,7 +41,7 @@ test('Gemini alone maps structured coordinates without claiming OCR agreement',(
   for(const change of [{complete:false},{datum:'unknown'},{multipleLots:true},{unclearFields:['corner']},{kind:'grid'},{coordinateRows:['14,120','14,120','14,120']},{statedAreaM2:1,areaEvidence:'1 square metre'}])assert.equal(assessGemini({...model(),...change}).status,'needs_help');
 });
 test('Gemini bearings require explicit metre units and remain unlocated',()=>{
-  const m={...model(),kind:'bearings',datum:'unknown',coordinateRows:[],courses:["N 80° 00' E 50.00 m","S 10° 00' E 40.00 m","S 80° 00' W 50.00 m","N 10° 00' W 40.00 m"]};
+  const m={...model(),kind:'bearings',datum:'unknown',coordinateRows:[],courses:[`N 80\u00b0 00' E 50.00 m`,`S 10\u00b0 00' E 40.00 m`,`S 80\u00b0 00' W 50.00 m`,`N 10\u00b0 00' W 40.00 m`]};
   assert.equal(assessGemini(m).status,'shape_only');assert.equal(assessGemini(m).points,null);
   assert.equal(assessGemini({...m,courses:m.courses.map(s=>s.replace(' m',''))}).status,'needs_help');
 });
